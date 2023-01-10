@@ -1,11 +1,17 @@
-from collections import Counter
 
+x = 9
+min = 0
+max = 9
 
-s="a"
-t="a"
-
-tCounter = Counter(t)
-sCounter = Counter(s[0:0+len(t)+1])
-tCounter = tCounter-sCounter
-
-print(tCounter)
+while(True):
+    middle = int(min+max/2)
+    middleSquare = middle*middle
+    middlePlus1Square = (middle+1)*(middle+1)
+    print(min,max,middle,middleSquare,middlePlus1Square)
+    if(middleSquare<=x and middlePlus1Square>x):
+        print(middle) 
+        break
+    if(middleSquare>x):
+        max = middle
+    else:
+        min = middle
