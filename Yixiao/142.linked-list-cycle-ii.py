@@ -20,7 +20,7 @@ class Solution(object):
 
         if(head == None):
             return None
-            
+
         slow = head
         fast = head
 
@@ -37,10 +37,6 @@ class Solution(object):
             fast = fast.next
             slow = slow.next
         return fast
-
-
-
-
         
 # @lc code=end
 
