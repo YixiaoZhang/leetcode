@@ -1,57 +1,48 @@
 
 
-def searchRange(nums, target):
-    """
-    :type nums: List[int]
-    :type target: int
-    :rtype: List[int]
-    """
-    if(len(nums)==0):
-        return [-1,-1]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+nums = [1,100,1,1,1,6,7,4,7,8,9,10,1,3,5,7,9]
+
+def quickSort(nums):
+    
+    if(len(nums)<2):
+        return nums
 
     left = 0
     right = len(nums)-1
-    find = False
 
-    while(not find):
-        middle = int((left+right)/2)
-        if(nums[middle]==target):
-            find = True
-            break
-        if(left==middle or middle==right):
-            print(left,middle,right)
-            break
-        if(nums[middle]<target):
-            left = middle
+    while(left!=right):
+        if(nums[right]<nums[0]):
+            right -=1
+        elif(nums[left]>=nums[0]):
+            left +=1
         else:
-            right = middle
-    
-    print(middle)
+            t = nums[left]
+            nums[left] = nums[right]
+            nums[right] = t
 
-    if(not find):
-        return [-1,-1]
-    
-    
+    t = nums[left]
+    nums[left] = nums[0]
+    nums[0] = t
 
-    if(middle>=1):
-        front = middle-1
-        while(nums[front]==target):
-            front -=1
-            if(front==-1):
-                break
-    else:
-        front = middle-1
+    return quickSort(nums[:left])+[nums[left]]+quickSort(nums[left+1:])
 
-    if(middle<=len(nums)-2):
-        back = middle+1
-        while(nums[back]==target):
-            back +=1
-            if(back==len(nums)):
-                break
-    else:
-        back = middle+1
-    
-    return [front+1,back-1]
-
-
-print(searchRange([1,4],4))
+print(quickSort(nums))
