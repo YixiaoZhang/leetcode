@@ -3,6 +3,23 @@
 
 
 
+from collections import Counter
+
+nums = [1,100,1,1,1,6,7,4,7,8,9,10,1,3,5,7,9]
+counter = Counter()
+for num in nums:
+    counter[num] += 1
+
+print(counter)
+for key in counter.keys():
+    print(key,counter[key])
+
+
+
+
+
+
+
 
 
 
@@ -45,4 +62,4 @@ def quickSort(nums):
 
     return quickSort(nums[:left])+[nums[left]]+quickSort(nums[left+1:])
 
-print(quickSort(nums))
+# print(quickSort(nums))
