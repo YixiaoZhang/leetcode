@@ -1,41 +1,73 @@
 
+heights = [[1,2,2,3,5],[3,2,3,4,4],[2,4,5,3,1],[6,7,1,4,5],[5,1,1,2,4]]
 
-isConnected = [[1,1,0],[1,1,0],[0,0,1]]
 
-def searchCity(isConnected,city,searched):
-    print("searching.."+str(city))
-    searched.append(city)
-    for i in range(len(isConnected)):
-        if(isConnected[city][i]==1 and i not in searched):
-            searched = searchCity(isConnected,i,searched)
-    return searched
-            
-
-def findCircleNum(isConnected):
-    """
-    :type isConnected: List[List[int]]
-    :rtype: int
-    """
-    searched = []
-    total = 0
-    for i in range(len(isConnected)):
-        if(i not in searched):
-            total += 1
-            searched = searchCity(isConnected,i,searched)
+def expand(heights,ocean,i,j):
+    ocean[i][j] = 1
+    if(i>0):
+        #up
+        if(heights[i][j]<=heights[i-1][j] and ocean[i-1][j]!=1):
+            ocean = expand(heights,ocean,i-1,j)
+    if(i<len(heights)-1):
+        #down
+        if(heights[i][j]<=heights[i+1][j] and ocean[i+1][j]!=1):
+            ocean = expand(heights,ocean,i+1,j)
+    if(j>0):
+        #left
+        if(heights[i][j]<=heights[i][j-1] and ocean[i][j-1]!=1):
+            ocean = expand(heights,ocean,i,j-1)
+    if(j<len(heights[0])-1):
+        #right
+        if(heights[i][j]<=heights[i][j+1] and ocean[i][j+1]!=1):
+            ocean = expand(heights,ocean,i,j+1)
+    return ocean
     
-    return total
 
-for i in range(len(isConnected)):
-    for j in range(len(isConnected[0])):
-        print(isConnected[i][j],end="")
+for i in range(len(heights)):
+    for j in range(len(heights[0])):
+        print(heights[i][j],end="")
     print("")
-    
-print(findCircleNum(isConnected))
 
 
+atlantic = []
+pacific = []
+for i in range(len(heights)):
+    row1 = []
+    row2 = []
+    for j in range(len(heights[0])):
+        row1.append(0)
+        row2.append(0)
+    atlantic.append(row1)
+    pacific.append(row2)
 
 
+for i in range(len(heights)):
+    for j in range(len(heights[0])):
+        if(j==len(heights[0])-1 or i==len(heights)-1):
+            atlantic = expand(heights,atlantic,i,j)
+        if(j==0 or i==0):
+            pacific = expand(heights,pacific,i,j)
 
+output = []
+for i in range(len(heights)):
+    for j in range(len(heights[0])):
+        if(atlantic[i][j]==1 and pacific[i][j]):
+            output.append([i,j])
+
+print(output)
+
+print("1==================")
+for i in range(len(atlantic)):
+    for j in range(len(atlantic[0])):
+        print(atlantic[i][j],end="")
+    print("")
+
+print("2==================")
+for i in range(len(pacific)):
+    for j in range(len(pacific[0])):
+        print(pacific[i][j],end="")
+    print("")
+print(atlantic[1][4],pacific[1][4])
 
 
 
