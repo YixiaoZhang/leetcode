@@ -1,69 +1,36 @@
 
 
-grid = [[0,0,1,0,0,0,0,1,0,0,0,0,0],[0,0,0,0,0,0,0,1,1,1,0,0,0],[0,1,1,0,1,0,0,0,0,0,0,0,0],[0,1,0,0,1,1,0,0,1,0,1,0,0],[0,1,0,0,1,1,0,0,1,1,1,0,0],[0,0,0,0,0,0,0,0,0,0,1,0,0],[0,0,0,0,0,0,0,1,1,1,0,0,0],[0,0,0,0,0,0,0,1,1,0,0,0,0]]
+isConnected = [[1,1,0],[1,1,0],[0,0,1]]
 
-def searchIsland(grid, area, searchedBlock, i, j):
+def searchCity(isConnected,city,searched):
+    print("searching.."+str(city))
+    searched.append(city)
+    for i in range(len(isConnected)):
+        if(isConnected[city][i]==1 and i not in searched):
+            searched = searchCity(isConnected,i,searched)
+    return searched
+            
 
-        if((i,j) in searchedBlock):
-            return 0, searchedBlock
-        if(grid[i][j]==0):
-            return 0, searchedBlock.append((i,j))
+def findCircleNum(isConnected):
+    """
+    :type isConnected: List[List[int]]
+    :rtype: int
+    """
+    searched = []
+    total = 0
+    for i in range(len(isConnected)):
+        if(i not in searched):
+            total += 1
+            searched = searchCity(isConnected,i,searched)
+    
+    return total
 
-        area = 1
-        searchedBlock.append((i,j))
-        print("add",i,j,", total area is",area)
-
-
-        if(i>0):
-            #search (i-1,j)
-            thisArea, thisSearchBlock = searchIsland(grid, area, searchedBlock, i-1, j)
-            area += thisArea
-            searchedBlock.append(thisSearchBlock)
-        if(i<len(grid)-1):
-            #search (i+1,j)
-            thisArea, thisSearchBlock = searchIsland(grid, area, searchedBlock, i+1, j)
-            area += thisArea
-            searchedBlock.append(thisSearchBlock)
-        if(j>0):
-            #search (i,j-1)
-            thisArea, thisSearchBlock = searchIsland(grid, area, searchedBlock, i, j-1)
-            area += thisArea
-            searchedBlock.append(thisSearchBlock)
-        if(j<len(grid[0])-1):
-            #search (i,j+1)
-            thisArea, thisSearchBlock = searchIsland(grid, area, searchedBlock, i, j+1)
-            area += thisArea
-            searchedBlock.append(thisSearchBlock)
-
-        
-        return area, searchedBlock
-
-
-
-def maxAreaOfIsland(grid):
-        """
-        :type grid: List[List[int]]
-        :rtype: int
-        """
-        searchedBlock = []
-        maxArea = 0
-
-        for i in range(len(grid)):
-            for j in range(len(grid[0])):
-                if(grid[i][j]==1 and ((i,j) not in searchedBlock)):
-                    area, searched = searchIsland(grid,0, searchedBlock,i,j)
-                    print("------",i,j,area)
-                    if(area>maxArea):
-                        maxArea = area
-        return maxArea
-
-
-for i in range(len(grid)):
-    for j in range(len(grid[0])):
-        print(grid[i][j],end="")
+for i in range(len(isConnected)):
+    for j in range(len(isConnected[0])):
+        print(isConnected[i][j],end="")
     print("")
     
-print(maxAreaOfIsland(grid))
+print(findCircleNum(isConnected))
 
 
 
