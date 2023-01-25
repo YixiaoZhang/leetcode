@@ -1,54 +1,47 @@
-mat = [[1,1,0],[1,1,1],[0,0,0]]
+matrix= [["0","1","1","0","1"],["1","1","0","1","0"],["0","1","1","1","0"],["1","1","1","1","0"],["1","1","1","1","1"],["0","0","0","0","0"]]
 
+dp = [[0 for j in range(len(matrix[0]))] for i in range(len(matrix))]
 
-dp = [[1000 for j in range(len(mat[0]))] for i in range(len(mat))]
+for i in range(len(dp)):
+    for j in range(len(dp[0])):
+        print(matrix[i][j],end=" ")
+    print("")
+print("=")
+
+for i in range(len(dp)):
+    for j in range(len(dp[0])):
+        dp[i][j] = int(matrix[i][j])
+        if(dp[i][j]==0):
+            continue
+        top = 0
+        if(i>=1):
+            top = dp[i-1][j]
+        left = 0
+        if(j>=1):
+            left = dp[i][j-1]
+        if(top>=dp[i][j] and left>=dp[i][j] and top>0 and left>0):
+            extend = 0
+            if(top>left):
+                extend = left
+            else:
+                extend = top
+            while(extend>0):
+                if(int(matrix[i-extend][j-extend])==1):
+                    dp[i][j]=extend+1
+                    break
+                extend-=1
+
 
 
 for i in range(len(dp)):
     for j in range(len(dp[0])):
-        if(mat[i][j]==0):
-            dp[i][j]=0
-        else:
-            if(i==0 and j==0):
-                continue
-            elif(i==0):
-                dp[i][j]=dp[i][j-1]+1
-            elif(j==0):
-                dp[i][j]=dp[i-1][j]+1
-            else:
-                min = dp[i][j-1]
-                if(dp[i-1][j]<dp[i][j-1]):
-                    min = dp[i-1][j]
-                dp[i][j] = min+1
-
-for i in range(0,len(dp)):
-    for j in range(0,len(dp[0])):
         print(dp[i][j],end=" ")
     print("")
-print("=")
-
-for i in range(len(dp)-1,-1,-1):
-    for j in range(len(dp[0])-1,-1,-1):
-        min = dp[i][j]
-
-        #see bottom
-        if(i<len(dp)-1):
-            if(dp[i+1][j]<min):
-                min=dp[i+1][j]+1
-        #see right
-        if(j<len(dp[0])-1):
-            if(dp[i][j+1]<min):
-                min=dp[i][j+1]+1
-        dp[i][j] = min
-            
 
 
-for i in range(0,len(dp)):
-    for j in range(0,len(dp[0])):
-        print(mat[i][j],end=" ")
-    print("")
-print("=")
-for i in range(0,len(dp)):
-    for j in range(0,len(dp[0])):
-        print(dp[i][j],end=" ")
-    print("")
+max = 0
+for i in range(len(dp)):
+    for j in range(len(dp[0])):
+        if(dp[i][j]**2>max):
+            max = dp[i][j]**2
+print(max)
